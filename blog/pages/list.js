@@ -2,10 +2,10 @@ import React from 'react';
 import Head from 'next/head'
 import Header from '../components/Header'
 import { Row,Col } from 'antd'
-const Home = () => (
+const myList = () => (
   <>
     <Head>
-      <title>home</title>
+      <title>list</title>
     </Head>
     <Header />
     <Row className="comm-main" type="flex" justify="center">
@@ -19,4 +19,4 @@ const Home = () => (
   </>
 )
 
-export default Home
+export default myList
