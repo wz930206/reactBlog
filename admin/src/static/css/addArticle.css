@@ -11,11 +11,9 @@
     background-color: #f0f0f0;
     overflow: auto;
 }
-
 .show-html h1{
     font-size:30px;
 }
-
 .show-html h2{
     font-size:28px;
     border-bottom: 1px solid #cbcbcb;
@@ -23,7 +21,6 @@
 .show-html h3{
     font-size:24px;
 }
-
 .show-html pre{
     display: block;
     background-color: #f0f0f0;
@@ -51,15 +48,12 @@
     border:1px solid #ddd;
     border-radius: 5px;
     font-size:16px;
-
     background-color: #f0f0f0;
 }
-
 
 .introduce-html h1{
     font-size:30px;
 }
-
 .introduce-html h2{
     font-size:28px;
     border-bottom: 1px solid #cbcbcb;
@@ -67,7 +61,6 @@
 .introduce-html h3{
     font-size:24px;
 }
-
 .introduce-html pre{
     display: block;
     background-color: #f0f0f0;
