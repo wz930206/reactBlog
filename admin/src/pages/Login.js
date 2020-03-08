@@ -1,17 +1,49 @@
 import React,{ useState } from 'react';
 import 'antd/dist/antd.css';
-import { Card, Input, Icon,Button ,Spin } from 'antd'
+import { Card, Input, Icon,Button ,Spin,message } from 'antd'
 import '../static/css/login.css'
-function Login() {
+import servicePath from '../config/apiUrl'
+import axios from 'axios'
+
+function Login(props) {
     const [userName, setUserName] = useState('')
     const [password, setPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     
     const checkLogin = () => {
         setIsLoading(true)
-        setTimeout(() => {
+        if(!userName) {
+            message.error('用户名不能为空')
+            setTimeout(() => {
+                setIsLoading(false)
+            },500)
+            return false
+        }else if(!password) {
+            message.error('密码不能为空')
+            setTimeout(() => {
+                setIsLoading(false)
+            },500)
+            return false
+        }
+        let dataProps = {
+            'userName': userName,
+            'password': password
+        }
+        axios({
+            method: 'post',
+            url: servicePath.checkLogin,
+            data: dataProps,
+            withCredentials: true           //前后端共享session
+        }).then(res => {
             setIsLoading(false)
-        },1000)
+            if(res.data.code === 10000) {
+                message.success(res.data.message)
+                // localStorage.setItem("openId",res.data.data.openId)
+                // props.history.push('/index')
+            }else {
+                message.error(res.data.message)
+            }
+        })
     }
     return (
         <div className="login-div">
@@ -24,6 +56,7 @@ function Login() {
                         prefix={<Icon type="user" style={{color:'rgba(0,0,0,.25)'}} />}
                         onChange={(e) => setUserName(e.target.value)}
                     />
+                    <br/><br/>
                     <Input.Password 
                         id="password"
                         size="large"

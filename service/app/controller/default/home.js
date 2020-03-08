@@ -11,12 +11,6 @@
 const Controller = require('egg').Controller;
 
 class HomeController extends Controller {
-  async index() {
-    let result = await this.app.mysql.select("blog_content",{})
-        console.log(result)
-        this.ctx.body=result
- 
-  }
     // 首页列表接口
     async getArticleList() {
       let sql = `SELECT article.id as id,
