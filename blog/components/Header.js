@@ -5,17 +5,36 @@
 // lg >= 992px
 // xl >=1200px
 // xxl >= 1600px
-import React, { useState } from 'react';
-import { Row,Col,Menu,Affix } from 'antd'
+import React, { useState,useEffect } from 'react';
+import { Row,Col,Menu,Affix, Icon } from 'antd'
 import {
     HomeOutlined,
-    VideoCameraOutlined,
-    AliwangwangOutlined,
-    AppstoreOutlined
+    AppstoreOutlined 
   } from '@ant-design/icons';
 import '../static/style/components/header.css'
+import axios from 'axios';
+import servicePath from '../config/apiUrl';
+import Router from 'next/router'
+
 const Header = () => {
-    const [top,setTop] = useState(10)
+    const [navArray , setNavArray] = useState([])
+    useEffect(() => {
+        const fetchData = async() => {
+            const result = await axios(servicePath.getTypeInfo).then(res => {
+                return res.data.data
+            })
+            setNavArray(result)
+        }
+        fetchData()
+    },[])
+    const handleClick = (e) => {
+        console.log(e)
+        if(e.key == 0) {
+            Router.push('/index')
+        }else {
+            Router.push('/list?id=' + e.key )
+        }
+    }
     return (
         <div className="header">
             <Row type="flex" justify="center">
@@ -24,29 +43,27 @@ const Header = () => {
                     <span className="header-txt">专注前端开发,每年100集免费视频</span>
                 </Col>
                 <Col className="memu-div" xs={0} sm={0} md={14} lg={8} xl={6}>
-                    <Menu mode="horizontal">
-                        <Menu.Item key="home">
+                    <Menu mode="horizontal" onClick={handleClick}>
+                        <Menu.Item key="0">
                             <HomeOutlined />
                             博客首页
                         </Menu.Item>
-                        <Menu.Item key="video">
-                            <VideoCameraOutlined />
-                            视频教程
-                        </Menu.Item>
-                        <Menu.Item key="life">
-                            <AliwangwangOutlined />
-                            健康生活
-                        </Menu.Item>
+                        {
+                            navArray.map((item) => {
+                                return (
+                                    <Menu.Item key={item.id}>
+                                        {item.typeName}
+                                    </Menu.Item>
+                                )
+                            })
+                        }
                     </Menu>
                 </Col>
                 <Col className="memu-div" xs={4} sm={4} md={0} lg={0} xl={0}>  
-                    <Affix offsetTop={top}>
-                        <AppstoreOutlined style={{fontSize: '18px' }}/>
-                    </Affix>
+                    <AppstoreOutlined style={{fontSize: '18px' }}/>
                 </Col>
             </Row>
         </div>
     )
 }
-
 export default Header
