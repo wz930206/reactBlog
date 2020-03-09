@@ -26,13 +26,13 @@ module.exports = appInfo => {
     // database configuration
     client: {
       // host
-      host: 'localhost',
+      host: '10.0.11.81',
       // port
       port: '3306',
       // username
-      user: 'root',
+      user: 'daile',
       // password
-      password: '123456',
+      password: 'daile123',
       // database
       database: 'react_blog',    
     },
@@ -49,7 +49,7 @@ module.exports = appInfo => {
   };
   config.cors = {
     origin: 'http://localhost:3000',      //只允许这个域进行访问
-    credentials: true,        //开启认证
+    credentials: true,        //允许cookie允许跨域
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS'
   }
   return {

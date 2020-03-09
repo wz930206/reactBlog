@@ -38,12 +38,16 @@ function Login(props) {
             setIsLoading(false)
             if(res.data.code === 10000) {
                 message.success(res.data.message)
-                // localStorage.setItem("openId",res.data.data.openId)
-                // props.history.push('/index')
+                console.log(res)
+                localStorage.setItem("openId",res.data.data.openId)
+                props.history.push('/index')
             }else {
                 message.error(res.data.message)
             }
         })
+        setTimeout(() => {
+            setIsLoading(false)
+        },3000)
     }
     return (
         <div className="login-div">
