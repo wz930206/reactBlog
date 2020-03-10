@@ -49,7 +49,7 @@ function AddArticle(props) {
     let html = marked(e.target.value)
     setIntroducehtml(html)
   }
-  const getTypeInfo = () => {
+  const getTypeInfo = () => {     //获取文章类型
     axios({
       method: 'get',
       url: servicePath.getTypeInfo,
@@ -85,7 +85,44 @@ function AddArticle(props) {
       message.error('发布日期不能为空')
       return false
     }
-    message.success('检验通过')
+    let dataProps = {}
+    dataProps.type_id = selectedType
+    dataProps.title = articleTitle
+    dataProps.article_cointent = articleContent
+    dataProps.introduce = introducemd
+    let datetext = showDate.replace('-','/')     
+    dataProps.addTime = (new Date(datetext).getTime())/1000
+    if(articleId === 0 ) {
+      dataProps.view_count = 0
+      axios({
+        method: 'post',
+        url: servicePath.addArticle,
+        data: dataProps,
+        withCredentials:true      //中间件守卫 跨域cookie
+      }).then(res => {
+        setArticleId(res.data.insertId)
+        if(res.data.isSuccess) {
+          message.success('文章保存成功')
+        } else {
+          message.success('文章保存失败')
+        }
+      })
+    } else {
+      dataProps.id = articleId
+      axios({
+        method: 'post',
+        url: servicePath.updateArticle,
+        data: dataProps,
+        header:{ 'Access-Control-Allow-Origin':'*' },
+        withCredentials:true      //中间件守卫 跨域cookie
+      }).then(res => {
+        if(res.data.isSuccess) {
+          message.success('文章修改成功')
+        } else {
+          message.success('文章修改失败')
+        }
+      })
+    }
   }
   return (
     <div>

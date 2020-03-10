@@ -20,7 +20,7 @@ class MainController extends Controller {
   async checkLogin() {
     let userName = this.ctx.request.body.userName
     let password = this.ctx.request.body.password
-    let sql = " SELECT userName FROM admin_user WHERE userName =  '"+ userName + "' AND password = '"+password+"'"
+    let sql = " SELECT userName FROM admin_user WHERE userName =  '" + userName + "' AND password = '" + password + "'"
     let res = await this.app.mysql.query(sql)
     if(res.length > 0) {
       let openId = new Date().getTime()
@@ -50,7 +50,23 @@ class MainController extends Controller {
   }
   // 发布文章 
   async addArticle() {
-    
+    let tempAriticle = this.ctx.request.body
+    const result = await this.app.mysql.insert('article',tempAriticle)
+    const insertSuccess = result.affectedRows === 1   //是否插入成功
+    const insertId = result.insertId                //插入成功返回的id
+    this.ctx.body = {
+      isSuccess: insertSuccess,
+      insertId: insertId
+    }
+  }
+  // 修改文章
+  async updateArticle() {
+    let tempAriticle = this.ctx.request.body
+    const result = await this.app.mysql.update('article',tempAriticle)
+    const updateSuccess = result.affectedRows === 1
+    this.ctx.body = {
+      isSuccess: updateSuccess
+    }
   }
 }
 module.exports = MainController
