@@ -35,7 +35,7 @@ const Home = (list) => {
   return (
     <>
       <Head>
-        <title>home</title>
+        <title>博客首页</title>
       </Head>
       <Affix offsetTop={0}>
         <Header />

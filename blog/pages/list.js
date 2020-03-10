@@ -19,7 +19,7 @@ const ArticleList = (list) => {
   return (
     <>
       <Head>
-        <title>list</title>
+        <title>博客列表页</title>
       </Head>
       <Header />
       <Row className="comm-main" type="flex" justify="center">

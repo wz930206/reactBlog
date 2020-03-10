@@ -4,7 +4,7 @@ import { GithubOutlined,QqOutlined,WechatOutlined } from '@ant-design/icons';
 const Author = () => (
     <div className="author-div comm-box">
         <div>
-            <Avatar size={100} src="http://blogimages.jspang.com/blogtouxiang1.jpg" />
+            <Avatar size={100} src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1842525767,595439623&fm=26&gp=0.jpg" />
         </div>
         <div className="author-introduction">
             光头程序员，专注于WEB和移动前端开发。要录1000集免费前端视频的傻X。此地维权无门，此时无能为力，此心随波逐流。

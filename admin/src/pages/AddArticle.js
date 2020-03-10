@@ -22,6 +22,7 @@ function AddArticle(props) {
   useEffect(() => {
     getTypeInfo()
   },[])
+  
   const renderer = new marked.Renderer();
   marked.setOptions({
     renderer: renderer,
@@ -88,10 +89,10 @@ function AddArticle(props) {
     let dataProps = {}
     dataProps.type_id = selectedType
     dataProps.title = articleTitle
-    dataProps.article_cointent = articleContent
+    dataProps.article_content = articleContent
     dataProps.introduce = introducemd
     let datetext = showDate.replace('-','/')     
-    dataProps.addTime = (new Date(datetext).getTime())/1000
+    dataProps.add_time = (new Date(datetext).getTime())/1000
     if(articleId === 0 ) {
       dataProps.view_count = 0
       axios({

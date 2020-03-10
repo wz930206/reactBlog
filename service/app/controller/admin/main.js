@@ -68,6 +68,21 @@ class MainController extends Controller {
       isSuccess: updateSuccess
     }
   }
+  // 查询文章列表
+  async getArticleList () {
+    let sql = 'SELECT article.id as id,'+
+    'article.title as title,'+
+    'article.introduce as introduce,'+
+    "FROM_UNIXTIME(article.add_time,'%Y-%m-%d' ) as addTime,"+
+    'type.typeName as typeName '+
+    'FROM article LEFT JOIN type ON article.type_id = type.Id '+
+    'ORDER BY article.id DESC '
+    const resultlIST = await this.app.mysql.query(sql)
+    this.ctx.body = {
+      data: resultlIST
+    }
+  }
+  //文章列表 删除数据
 }
 module.exports = MainController
 
