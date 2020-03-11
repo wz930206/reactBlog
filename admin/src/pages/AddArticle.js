@@ -12,15 +12,20 @@ function AddArticle(props) {
   const [articleId,setArticleId] = useState(0)  // 文章的ID，如果是0说明是新增加，如果不是0，说明是修改
   const [articleTitle,setArticleTitle] = useState('')   //文章标题
   const [articleContent , setArticleContent] = useState('')  //markdown的编辑内容
-  const [markdownContent, setMarkdownContent] = useState('预览内容') //html内容
-  const [introducemd,setIntroducemd] = useState()            //简介的markdown内容
-  const [introducehtml,setIntroducehtml] = useState('等待编辑') //简介的html内容
+  const [markdownContent, setMarkdownContent] = useState('') //html内容
+  const [introduced,setIntroduced] = useState()            //简介的markdown内容
+  const [introducehtml,setIntroducehtml] = useState('') //简介的html内容
   const [showDate,setShowDate] = useState()   //发布日期
   const [updateDate,setUpdateDate] = useState() //修改日志的日期
   const [typeInfo ,setTypeInfo] = useState([]) // 文章类别信息
   const [selectedType,setSelectType] = useState('请选择类型') //选择的文章类别
   useEffect(() => {
     getTypeInfo()
+    console.log(props)
+    if(props.location.query) {
+      setArticleId(props.location.query.id)
+      getArticleById(props.location.query.id)
+    }
   },[])
   
   const renderer = new marked.Renderer();
@@ -46,7 +51,7 @@ function AddArticle(props) {
     setMarkdownContent(html)
   }
   const changeIntroduce = (e) => {
-    setIntroducemd(e.target.value)
+    setIntroduced(e.target.value)
     let html = marked(e.target.value)
     setIntroducehtml(html)
   }
@@ -66,8 +71,27 @@ function AddArticle(props) {
       }
     })
   }
+  // 通过id获取文章相关字段
+  const getArticleById = (id) => {
+    axios({
+      method: 'get',
+      url: servicePath.getArticleById + id,
+      withCredentials: true
+    }).then( res => {
+      setArticleTitle(res.data.data[0].title)
+      setArticleContent(res.data.data[0].articleContent)
+      let html=marked(res.data.data[0].articleContent)
+      setMarkdownContent(html)
+      setIntroduced(res.data.data[0].introduce)
+      let tmpInt = marked(res.data.data[0].introduce)
+      setIntroducehtml(tmpInt)
+      setShowDate(res.data.data[0].addTime)
+      setSelectType(res.data.data[0].typeId)
+    })
+  }
   const selectedTypeHandler = (value) => {
     setSelectType(value)
+    console.log(selectedType)
   }
   const saveArticle = () => {
     if(selectedType === '请选择类型'){
@@ -79,7 +103,7 @@ function AddArticle(props) {
     }else if(!articleContent){
       message.error('文章内容不能为空')
       return false
-    }else if(!introducemd){
+    }else if(!introduced){
       message.error('简介不能为空')
       return false
     }else if(!showDate){
@@ -90,7 +114,7 @@ function AddArticle(props) {
     dataProps.type_id = selectedType
     dataProps.title = articleTitle
     dataProps.article_content = articleContent
-    dataProps.introduce = introducemd
+    dataProps.introduce = introduced
     let datetext = showDate.replace('-','/')     
     dataProps.add_time = (new Date(datetext).getTime())/1000
     if(articleId === 0 ) {
@@ -135,6 +159,7 @@ function AddArticle(props) {
                 placeholder="博客标题"
                 onChange={ e => {setArticleTitle(e.target.value)}}
                 size="large"
+                value={articleTitle}
               />
             </Col>
             <Col span={4}>
@@ -157,6 +182,7 @@ function AddArticle(props) {
                 rows={35}
                 placeholder="文章内容"
                 onChange={changeContent}
+                value={articleContent}
                 />
             </Col>
             <Col span={12}>
@@ -177,6 +203,7 @@ function AddArticle(props) {
                 rows={4}
                 placeholder="文章简介"
                 onChange={changeIntroduce}
+                value={introduced}
               />
               <br /><br />
               <div className="introduce-html" dangerouslySetInnerHTML={{__html:'文章简介：'+ introducehtml}}></div>

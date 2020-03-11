@@ -13,21 +13,32 @@ function AdminIndex(props) {
     const onCollapse = collapsed => {
         setCollapse(collapsed);
     }
+    const handelClickArticle = e => {
+        if(e.key === 'addArticle') {
+            props.history.push('/index/add')
+        } else {
+            props.history.push('/index/list')
+        }
+    }
+    const handelClickChart = () => {
+        props.history.push('/index/chart')
+    }
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
                 <div className="logo" />
                 <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-                    <Menu.Item key="indexChart">
+                    <Menu.Item key="indexChart" onClick={handelClickChart}>
                         <Icon type="pie-chart" />
                         <span>工作台</span>
                     </Menu.Item>
-                    <Menu.Item key="addArticle">
+                    <Menu.Item key="addArticle" onClick={handelClickArticle}>
                         <Icon type="desktop" />
                         <span>添加文章</span>
                     </Menu.Item>
                     <SubMenu
                         key="3"
+                        onClick={handelClickArticle}
                         title={
                             <span>
                                 <Icon type="user" />

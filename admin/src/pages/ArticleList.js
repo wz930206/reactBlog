@@ -18,6 +18,32 @@ function ArticleList (props) {
             setList(res.data.data)
         })
     }
+    const delArticle = (id) => {
+        confirm({
+            title: '删除',
+            content: 'Do you Want to delete these items?',
+            onOk() {
+                axios({
+                    method: 'get',
+                    url:servicePath.delArticle + id,
+                    withCredentials: true
+                }).then(res => {
+                    if(res.data.code === 10000) {
+                        message.success('删除成功')
+                        getList()
+                    } else {
+                        message.error('删除失败')
+                    }
+                })
+            },
+            onCancel() {
+
+            }
+        })
+    }
+    const editArticle = id => {
+        props.history.push({pathname: '/index/add/',query: {'id': id}})
+    }
     return (
         <div>
             <List 
@@ -52,9 +78,9 @@ function ArticleList (props) {
                                 {item.viewCount ? item.viewCount : '1'}
                             </Col>
                             <Col span={4}>
-                                <Button type="primary">修改</Button>
+                                <Button type="primary" onClick={() => editArticle(item.id)}>修改</Button>
                                 &nbsp;
-                                <Button>删除</Button>
+                                <Button onClick={() => (delArticle(item.id))}>删除</Button>
                             </Col>
                         </Row>
                     </List.Item>
