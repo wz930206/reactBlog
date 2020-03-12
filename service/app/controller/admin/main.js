@@ -39,6 +39,27 @@ class MainController extends Controller {
       }
     }
   }
+  async register() {
+    let userName = this.ctx.request.body.userName
+    let password = this.ctx.request.body.password
+    let sql = 'SELECT admin_user.userName FROM admin_user WHERE admin_user.userName=' + userName
+    const result = await this.app.mysql.query(sql)
+    console.log(result)
+    this.ctx.body = {
+      "code": 10000,
+      "message": "获取成功",
+      "data": result
+    }
+    // const inserSuccess = result.affectedRows === 1
+    // console.log(inserSuccess)
+    // if(inserSuccess) {
+    //   this.ctx.body = {
+    //     code: 10000,
+    //     message: '注册成功'
+    //   }
+    // }
+    
+  }
   // 获取文章类型
   async getTypeInfo() {
     const typeResult = await this.app.mysql.select('type')

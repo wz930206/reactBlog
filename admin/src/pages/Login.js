@@ -49,6 +49,9 @@ function Login(props) {
             setIsLoading(false)
         },3000)
     }
+    const register = () => {
+        props.history.push('/reg')
+    }
     return (
         <div className="login-div">
             <Spin tip="Loading..." spinning={isLoading}>
@@ -70,6 +73,8 @@ function Login(props) {
                     />
                     <br/><br/>
                     <Button type="primary" size="large" block onClick={checkLogin}> Login in </Button>
+                    <br /><br/>
+                    <Button size="large" block onClick={register}> Register in </Button>
                 </Card>
             </Spin>
         </div>
