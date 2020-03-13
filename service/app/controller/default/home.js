@@ -16,7 +16,7 @@ class HomeController extends Controller {
       let sql = `SELECT article.id as id,
               article.title as title,
               article.introduce as introduce,
-              FROM_UNIXTIME(article.add_time,'%Y-%m-%d %H:%i:%s' ) as addTime,
+              FROM_UNIXTIME(article.addTime,'%Y-%m-%d %H:%i:%s' ) as addTime,
               article.view_count as viewCount,
               .type_main.typeName as typeName
               FROM article LEFT JOIN type_main ON article.type_id = type_main.Id`
@@ -33,8 +33,8 @@ class HomeController extends Controller {
       let sql = `SELECT article.id as id,
               article.title as title,
               article.introduce as introduce,
-              article.article_content as articleContent,
-              FROM_UNIXTIME(article.add_time,'%Y-%m-%d %H:%i:%s' ) as addTime,
+              article.article_cointent as articleContent,
+              FROM_UNIXTIME(article.addTime,'%Y-%m-%d %H:%i:%s' ) as addTime,
               article.view_count as viewCount,
               .type_main.typeName as typeName,
               type_main.id as typeId
@@ -68,6 +68,16 @@ class HomeController extends Controller {
       'WHERE type_id='+id
       const result = await this.app.mysql.query(sql)
       this.ctx.body={data:result}
+    }
+    //点击文章增加次数
+    async addClickCount() {
+      let id = this.ctx.params.id
+      let sql = `UPDATE article set article.view_count = article.view_count + ${1} WHERE article.id = ${id}`
+      const result = await this.app.mysql.query(sql)
+      const updateSuccess = result.affectedRows === 1
+      this.ctx.body = {
+        isSuccess: updateSuccess
+      } 
     }
 }
 module.exports = HomeController

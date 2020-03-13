@@ -84,7 +84,7 @@ Home.getInitialProps = async () => {
     axios(servicePath.getArticleList).then(
       (res) => {
         resolve(res.data)
-    })
+    }).catch(err => console.log(err)) 
   })
   return await promise
 }

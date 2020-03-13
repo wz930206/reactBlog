@@ -63,9 +63,8 @@ const ArticleList = (list) => {
 ArticleList.getInitialProps = async (context)=>{
   let id =context.query.id
   const promise = new Promise((resolve)=>{
-    axios(servicePath.getListById+id).then(
-      (res)=>resolve(res.data)
-    )
+    axios(servicePath.getListById+id).then((res)=>resolve(res.data)
+    ).catch(err => console.log(err)) 
   })
   return await promise
 }

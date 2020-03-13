@@ -22,7 +22,7 @@ const Header = () => {
         const fetchData = async() => {
             const result = await axios(servicePath.getTypeInfo).then(res => {
                 return res.data.data
-            })
+            }).catch(err => console.log(err)) 
             setNavArray(result)
         }
         fetchData()

@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useEffect} from 'react';
 import Head from 'next/head'
 import Header from '../components/Header'
 import { Row,Col,Breadcrumb,Affix } from 'antd'
@@ -17,6 +17,14 @@ import axios from 'axios';
 import servicePath from '../config/apiUrl';
 
 const Detailed = (props) => {
+  
+  useEffect(() => {
+    let postId = props.id
+    const fetchData = async() => {
+      axios(servicePath.addClickCount + postId)
+    } 
+    fetchData()
+  },[])
   let markdown= props.articleContent
   const renderer = new marked.Renderer();
   const tocify = new Tocify()
@@ -96,7 +104,7 @@ Detailed.getInitialProps = async (ctx) => {
   let promise = new Promise(resolve => {
     axios(servicePath.getArticleById + id ).then( res => {
       resolve(res.data.data[0])
-    })
+    }).catch(err => console.log(err)) 
   })
   return await promise
 }
